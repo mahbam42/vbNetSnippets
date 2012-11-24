@@ -1,0 +1,13 @@
+how to do ddls in aspx.net code behind 
+
+      Dim al As New ArrayList
+      al.Add("Moshe")
+      al.Add("Max")
+      DropDownList1.DataSource = al
+      DropDownList1.DataBind()
+
+
+Protected Sub ddl_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ddlStoneType.SelectedIndexChanged
+
+
+MUST HAVE "AutoPostBack="true"" in the front end control otherwise it won't do nothing! 

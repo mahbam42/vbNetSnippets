@@ -1,0 +1,421 @@
+﻿<script type="text/javascript">
+//From pavers.asp - does a bunch of stuff including setting the number of available lines based on
+//the type of brick and quantity selected. 
+
+//I think this little function decides if a value is an integer and if not makes it a zero (0) instead. 
+
+function IsNumeric(sText)
+
+{
+
+   var ValidChars = "123";
+
+   var IsNumber=true;
+
+   var Char;
+
+   for (i = 0; i < sText.length && IsNumber == true; i++) 
+
+      { 
+
+      Char = sText.charAt(i); 
+
+      if (ValidChars.indexOf(Char) == -1) 
+
+         {
+
+         IsNumber = false;
+
+         }
+
+      }
+
+   return IsNumber;
+
+}
+
+
+
+function prepareform()
+
+{
+
+	// load event for the form used to set the state of the input fields 
+
+	
+
+	updateselect("1");
+
+	
+
+	document.getElementById('qty').focus();
+
+	document.getElementById('qty').select();
+
+}
+
+
+
+
+
+function togleonoff(whichone,onoff)
+
+{
+
+	var d=1;
+
+	var m=30;
+
+	var c="silver";
+
+	
+
+	if (onoff)
+
+	{
+
+		// if togle on then change to on values 
+
+		d=0;
+
+		m=0;
+
+		c="white";
+
+
+
+	}
+
+	
+
+	/* togle purchase on off whichone is there selection and the onoff is the on/off togle */
+
+		var sel ="Select" + whichone; 
+
+		var opt = document.getElementById(sel);
+
+		opt.disabled=d;
+
+		//opt.setAttribute('disabled',d);
+
+
+
+		opt.setAttribute('maxLength',m);	
+
+		opt.style.backgroundColor=c;
+
+		
+
+		var inputname="";
+
+		var i=0;
+
+		for (i=1;i<=7;i++)
+
+		{
+
+			inputname = "pav" + i + whichone;
+
+			var selinp = document.getElementById(inputname);
+
+			/* disable ans set lengths*/
+
+		
+
+			selinp.disabled=d;
+
+//		  	selinp.setAttribute('disabled',d);
+
+		  	selinp.setAttribute('maxLength',m);	
+
+		  	selinp.style.backgroundColor=c;
+
+		}
+
+}
+
+
+
+function updateselect(qtyPurch)
+
+{
+
+	if (IsNumeric(qtyPurch)) 
+
+	{
+
+		//alert("number");
+
+		switch(qtyPurch)
+
+			{
+
+			case "1":
+
+				togleonoff(1,1);
+
+				createoptions(1);		
+
+				togleonoff(2,0);
+
+				document.getElementById("subtotal2").innerHTML = 0;
+
+				togleonoff(3,0);
+
+				document.getElementById("subtotal3").innerHTML = 0;
+
+				break; 
+
+			case "2":
+
+				togleonoff(1,1);
+
+				createoptions(1);
+
+				togleonoff(2,1);
+
+				createoptions(2);
+
+				togleonoff(3,0);
+
+				document.getElementById("subtotal3").innerHTML = 0;		
+
+				break;  
+
+			case "3":
+
+				togleonoff(1,1);
+
+				togleonoff(2,1);
+
+				togleonoff(3,1);
+
+				createoptions(1);
+
+				createoptions(2);		
+
+				createoptions(3);		
+
+				break;  
+
+			}  
+
+			calculate();
+
+	}
+
+	else
+
+	{
+
+		alert("Quantity needs to be 1, 2 or 3");
+
+		document.getElementById('qty').focus();
+
+		document.getElementById('qty').select();
+
+		//return;
+
+	}
+
+}
+
+
+
+
+
+function calculate()
+
+{
+
+	var t = 0;
+
+	var s1 = 0;
+
+	var s2 = 0;
+
+	var s3 = 0;
+
+	
+
+	s1 = document.getElementById("subtotal1").innerHTML * 1;
+
+	s2 = document.getElementById("subtotal2").innerHTML * 1;
+
+	s3 = document.getElementById("subtotal3").innerHTML * 1;
+
+	t = s1 + s2 + s3;
+
+	document.getElementById("total").innerHTML = t;
+
+	document.getElementById("gtotal").value = t;
+
+} 
+
+ 
+
+function createoptions(whichone)
+
+{
+
+/* 
+
+	Update input field state based on selected option 
+
+	Active - input fields get enabled, aquires length, changes color
+
+	Deactivated - input fields get disabled, change length, change color
+
+*/
+
+
+
+	var numbchars=0;
+
+	var numlines=0;
+
+	var sel ="Select" + whichone; 
+
+	var opt = document.getElementById(sel).options[document.getElementById(sel).selectedIndex].value;
+
+	var sub = "subtotal" +  whichone;
+
+	var selh = "s"  +  whichone;
+
+	switch(opt)
+
+	{
+
+	case "1":
+
+	  numbchars=30;
+
+	  numlines=7;
+
+	  document.getElementById(sub).innerHTML = 3600;
+
+	  document.getElementById(selh).value = '24" X 24" (7 lines / 30 characters per line)';
+
+	  break; 
+
+	case "2":
+
+	  numbchars=20;
+
+	  numlines=5;
+
+	  document.getElementById(sub).innerHTML = 1800;
+
+      document.getElementById(selh).value = '12" X 24" (5 lines / 20 characters per line)';
+
+	  break;   
+
+	case "3":
+
+	  numbchars=20;
+
+	  numlines=4;
+
+	  document.getElementById(sub).innerHTML = 720;
+
+	  document.getElementById(selh).value = '12" X 12" (4 lines / 20 characters per line)';
+
+	  break;    
+
+	case "4":
+
+	  numbchars=18;
+
+	  numlines=3;
+
+	  document.getElementById(sub).innerHTML = 360;
+
+	  document.getElementById(selh).value = '6" X 12" (3 lines / 18 characters per line)';
+
+	  break;  
+
+	case "5":
+
+	  numbchars=10;
+
+	  numlines=3;
+
+	  document.getElementById(sub).innerHTML = 180;  
+
+	  document.getElementById(selh).value = '6" X 6" (3 lines / 10 characters per line)';
+
+	  break;  
+
+	default:
+
+	  numbchars=0;
+
+	  numlines=0;
+
+	  document.getElementById(sub).innerHTML = 0;  
+
+	  document.getElementById(selh).value = "";
+
+	  break; 
+
+	}	
+
+	calculate();
+
+	var inputname="";
+
+	var i=0;
+
+	for (i=1;i<=7;i++)
+
+	{
+
+		inputname = "pav" + i + whichone;
+
+		var selinp = document.getElementById(inputname);
+
+		var txt = selinp.value;
+
+		if (i<=numlines) 
+
+		{
+
+	    /* enable ans set lengths*/
+
+	    selinp.disabled=false;
+
+	 //   selinp.setAttribute('disabled',0);
+
+	 //	txt=Trim(txt);
+
+	 	txt=txt.substring(0,numbchars);
+
+	 	selinp.value=txt;
+
+	    selinp.setAttribute('maxLength',numbchars);
+
+	  	selinp.style.backgroundColor='white';
+
+		} else {
+
+		/* disable ans set lengths*/
+
+		selinp.disabled=true;
+
+//	  	selinp.setAttribute('disabled',1);
+
+	  	selinp.setAttribute('maxLength',0);	
+
+	  	selinp.style.backgroundColor='silver';
+
+	  	selinp.value="";
+
+		}
+
+	}
+
+}
+
+
+
+</script>

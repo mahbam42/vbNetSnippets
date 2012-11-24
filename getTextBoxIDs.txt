@@ -1,0 +1,13 @@
+      Dim c As Control
+      Dim c2 As Control
+      For Each c In Master.FindControl("ContentPlaceHolder1").Controls
+         If c.Controls.Count > 0 Then
+            For Each c2 In c.Controls
+               If c2.GetType.ToString = "System.Web.UI.WebControls.TextBox" Then
+                  If c2.ID.ToString.StartsWith("txt") Then
+                     lblTestResults.Text = lblTestResults.Text + c2.ID.ToString + ", "
+                  End If
+               End If
+            Next
+         End If
+      Next

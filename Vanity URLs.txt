@@ -1,0 +1,15 @@
+For inet3 
+
+Under "Current Students/"
+	Make a new directory named what ever you want the vanity path to be 
+	(It will look like: "ajula.edu/new folder")
+	Copy/Paste the ASPX and Code behind files from another folder into your new directory
+	Change the url path in the Code Behind to match your desired destination 
+	Save and test! 
+
+For Insite
+	Make a new directory named what ever you want the vanity path to be 
+	(It will look like: "ajula.edu/new folder")
+	Copy/Paste the HTML file from another folder into your new directory
+	Change the url path in the <script> and in the <a href...> to match your desired destination
+	Save and Test

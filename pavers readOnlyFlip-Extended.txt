@@ -1,0 +1,32 @@
+      For i = 1 To 9 'This will change once we work out the math for determining the columns selected. 
+         c = Page.FindControl("txtLine" + i.ToString) 'Finds a control labeled txtLine#, and so on for the value of i
+         If TypeOf c Is TextBox Then 'Prevents the form from failing
+            c.ReadOnly = True
+            c.BackColor = Drawing.Color.WhiteSmoke
+         End If
+      Next 'Continue to loop 2 to flip the desired number of boxes
+      If num1 > 0 Then
+         For i = 1 To num1
+            c = Page.FindControl("txtLine" + i.ToString)
+            If TypeOf c Is TextBox Then
+               c.ReadOnly = False
+               c.BackColor = Drawing.Color.White
+            End If
+         Next
+         For i = 1 To 9 'Loop to set the maxLength of the text boxes to match the table
+            If i <= num1 Then '9 is the maxium but this limits it to the current number of lines
+               c = Page.FindControl("txtLine" + i.ToString)
+               If TypeOf c Is TextBox Then
+                  c.ReadOnly = False 'don't know why, but this needs to be here...
+                  c.MaxLength = num2 'from above 
+                  'for testing:
+                  lblMessage.Text = "The maxLength of the Text Boxes is&nbsp;" + num2.ToString + " The number of available boxes is&nbsp;" + num1.ToString + "<br /> Taco!"
+                  If c.Text.Trim.Length > num2 Then 'if the content is longer than the new max length
+                     c.Text = Left(c.Text, num2) 'trims to fit new maxLength
+                     c.BackColor = Drawing.Color.LightYellow 'and makes the background yellow and gives a friendly message
+                     lblWarning.Text = "Please make sure the text is correct before submitting."
+                  End If
+               End If
+            End If
+         Next
+      End If

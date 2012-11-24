@@ -1,0 +1,56 @@
+Protected Sub SignUp()
+      Dim i As Integer = 0
+      Dim chkBox As UI.WebControls.CheckBox
+      'qM(embers)
+      Dim qM As Integer = 0
+      'qG(uests)
+      Dim qG As Integer = 0
+      For i = 1 To 10
+         chkBox = Master.FindControl("ContentPlaceHolder1").FindControl("cbMember" + i.ToString)
+         If chkBox.Checked = True Then
+            qM = qM + 1
+            Dim txtGuests As UI.WebControls.TextBox
+            txtGuests = Master.FindControl("ContentPlaceHolder1").FindControl("txtGuestCount" + i.ToString)
+            txtGuests.ReadOnly = False
+            Dim guestNames As UI.WebControls.TextBox
+            guestNames = Master.FindControl("ContentPlaceHolder1").FindControl("txtGuestNames" + i.ToString)
+            Dim guestNameLbl As UI.WebControls.Label
+            guestNameLbl = Master.FindControl("ContentPlaceHolder1").FindControl("lblGuestNames" + i.ToString)
+            guestNameLbl.Visible = True
+            guestNames.Visible = True
+         Else
+            Dim txtGuests As UI.WebControls.TextBox
+            txtGuests = Master.FindControl("ContentPlaceHolder1").FindControl("txtGuestCount" + i.ToString)
+            txtGuests.ReadOnly = True
+            Dim guestNames As UI.WebControls.TextBox
+            guestNames = Master.FindControl("ContentPlaceHolder1").FindControl("txtGuestNames" + i.ToString)
+            Dim guestNameLbl As UI.WebControls.Label
+            guestNameLbl = Master.FindControl("ContentPlaceHolder1").FindControl("lblGuestNames" + i.ToString)
+            guestNameLbl.Visible = False
+            guestNames.Text = ""
+            guestNames.Visible = False
+         End If
+      Next
+   End Sub
+
+   Protected Function total()
+      'quantities 
+      'qM(embers)
+      Dim qM As Integer = 0
+      'qG(uests)
+      Dim qG As Integer = 0
+      Dim i As Integer = 0
+      Dim t As Integer = 0
+      Dim chkBox As UI.WebControls.CheckBox
+      For i = 1 To 10
+         chkBox = Master.FindControl("ContentPlaceHolder1").FindControl("cbMember" + i.ToString)
+         If chkBox.Checked = True Then
+            qM = qM + 1
+            Dim txtGuests As UI.WebControls.TextBox
+            txtGuests = Master.FindControl("ContentPlaceHolder1").FindControl("txtGuestCount" + i.ToString)
+            Double.TryParse(txtGuests.Text, qG)
+         End If
+      Next
+      t = (qM * 45) + (qG * 50)
+      total = t
+   End Function

@@ -1,0 +1,4 @@
+Dim gt as double = 0
+Double.TryParse(txtGT.Text,gt)
+if gt <> 0 then
+‘the rest of the code and .TotalAmount = gt 

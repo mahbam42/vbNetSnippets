@@ -1,0 +1,12 @@
+      Dim htmlEmail As String
+      Dim o As New HTMLUtilities
+      htmlEmail = o.buildHtml("testhtmlEmail.html", "ctl00$ContentPlaceHolder1$", "visibility:visible", "visibility:hidden")
+      'This label is for testing and lets you preview the message in the document. 
+      Label1.Text = ""
+      Label1.Text = htmlEmail
+      If String.IsNullOrEmpty(Label1.Text) = False Then
+         Dim om As New NameBO.AJUUtilities.Mail
+         Dim oBr As New NameBO.AJUUtilities.BrokenRules
+         oBr = om.SendMail("Game Change food order", htmlEmail, "wcce@ajula.edu", "mbrother@ajula.edu", "Whizin Center For Continuing Education - test")
+         'SendMail("wcce@ajula.edu", "myalovsky@ajula.edu", "test buildHTML", htmlEmail)
+      End If

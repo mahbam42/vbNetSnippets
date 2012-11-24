@@ -1,0 +1,15 @@
+Protected Sub clearControls()
+      Dim c As Control
+      Dim c2 As Control
+      For Each c In Page.Controls
+         If c.Controls.Count > 0 Then
+            For Each c2 In c.Controls
+               If c2.GetType.ToString = "System.Web.UI.WebControls.TextBox" Then
+                  If c2.ID.ToString.StartsWith("txt") Then
+                     CType(c2, TextBox).Text = ""
+                  End If
+               End If
+            Next
+         End If
+      Next
+   End Sub

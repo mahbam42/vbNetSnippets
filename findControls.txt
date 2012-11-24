@@ -1,0 +1,37 @@
+Private Sub readOnlyFlip(ByVal num1 As Integer, ByVal num2 As Integer)
+      'num1 is lines, num2 is characters 
+      Dim c As UI.WebControls.TextBox
+      Dim i As Integer
+      If num1 > 0 Then
+         For i = 1 To 9
+            'deal with available rows
+            Try
+               c = Master.FindControl("ContentPlaceHolder1").FindControl("txtLine" + i.ToString)
+            Catch
+               c = Page.FindControl("txtLine" + i.ToString)
+            End Try
+            'c = Master.FindControl("ContentPlaceHolder1").FindControl("txtLine" + i.ToString)
+            If i <= num1 Then '9 is the maxium but this limits it to the current number of lines
+               If TypeOf c Is TextBox Then
+                  c.ReadOnly = False 'don't know why, but this needs to be here...
+                  c.MaxLength = num2 'from above 
+                  'for testing:
+                  'lblMessage.Text = "The maxLength of the Text Boxes is&nbsp;" + num2.ToString + " The number of available boxes is&nbsp;" + num1.ToString
+                  If c.Text.Trim.Length > num2 Then 'if the content is longer than the new max length
+                     c.Text = Left(c.Text, num2) 'trims to fit new maxLength
+                     c.BackColor = Drawing.Color.LightYellow 'and makes the background yellow and gives a friendly message
+                     lblWarning.Text = "Please make sure the text is correct before submitting."
+                  Else
+                     c.BackColor = Drawing.Color.White
+                     'lblWarning.Text = ""
+                  End If
+               End If
+            Else
+               'turn stuff off here!
+               c.Text = "" '.Remove(0, num2)
+               c.ReadOnly = True
+               c.BackColor = Drawing.Color.WhiteSmoke
+            End If
+         Next
+      End If
+   End Sub

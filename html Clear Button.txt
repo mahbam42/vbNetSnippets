@@ -1,0 +1,37 @@
+I cannot promise that this is THE solution but here it is:
+Use HTML button instead of aspx button as follows:
+<input type="reset" value="Clear form" />
+If we will need fine-tuning put in the header
+<script type="text/javascript">
+function clear_form_elements(ele) {
+    $(ele).find(':input').each(function() {
+        switch(this.type) {
+            case 'password':
+            case 'select-multiple':
+            case 'select-one':
+            case 'text':
+            case 'textarea':
+                $(this).val('');
+                break;
+            case 'checkbox':
+            case 'radio':
+                this.checked = false;
+        }
+    });
+}
+</script>
+And then In the body
+  <fieldset id="example_1">
+      <legend>Section 1</legend>
+      <input type="text" value="this is the default text" style="width: 200px;" />
+      <br />
+      <input type="password" value="password" style="width: 200px;" />
+      <br />
+      <textarea rows="3" cols="20" style="width: 200px;">this is the default textarea</textarea>
+      <br />
+   </fieldset>
+
+
+<input type="button" value="Clear Section 1" onclick="clear_form_elements('#example_1')" />
+Thanks
+Moshe

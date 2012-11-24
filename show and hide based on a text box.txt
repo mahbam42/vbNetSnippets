@@ -1,0 +1,57 @@
+   Protected Sub btnFive_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnFive.Click
+      Dim numberOf As Integer = 0
+      If String.IsNullOrEmpty(txtNumberOf.Text) = False Then 'Takes the value from a text box and stores it for the looping
+         Integer.TryParse(txtNumberOf.Text, numberOf)
+         If numberOf > -1 Then 'Allows zero to be an inputted value
+            showHideBoxes(numberOf)
+         End If
+      End If
+   End Sub
+
+   Private Sub showHideBoxes(ByVal num As Integer)
+      Dim c As Control
+      Dim i As Integer
+      'Loop 1 identifies and hides all boxes
+      For i = 1 To 9 'End Point is hard coded to total number of boxes we want to hide
+         c = Page.FindControl("TextBox" + i.ToString) 'Finds a control labeled Textbox1, and so on for the value of i
+         If TypeOf c Is TextBox Then 'Prevents the form from failing
+            c.Visible = False 
+         End If
+      Next 'Continue to loop 2 to flip the desired number of boxes 
+      If num > 0 Then
+         For i = 1 To num
+            c = Page.FindControl("TextBox" + i.ToString)
+            If TypeOf c Is TextBox Then
+               c.Visible = True
+            End If
+         Next
+      End If
+
+   End Sub
+
+   Private Sub readOnlyFlip(ByVal num As Integer)
+      Dim c As UI.WebControls.TextBox
+      Dim i As Integer
+      'Dim txtBox As Control
+      For i = 1 To 27 'This will change once we work out the math for determining the columns selected. 
+         c = Page.FindControl("TextBox" + i.ToString)
+         'Dim txtBox = c, Type("TextBox")
+         If TypeOf c Is TextBox Then
+            'c.Attributes.Add("readonly", "readonly")
+            c.ReadOnly = True
+            c.BackColor = Drawing.Color.WhiteSmoke
+         End If
+      Next
+      If num > 0 Then
+         For i = 1 To num
+            c = Page.FindControl("TextBox" + i.ToString)
+            'Dim txtBox = c, Type("TextBox")
+            If TypeOf c Is TextBox Then
+               'c.Attributes.Add("readonly", "readonly")
+               c.ReadOnly = False
+               c.BackColor = Drawing.Color.White
+            End If
+         Next
+      End If
+
+   End Sub

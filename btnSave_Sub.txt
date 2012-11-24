@@ -1,0 +1,111 @@
+''' <summary>
+   ''' This handles the click event on the Save button
+   ''' To-do
+   ''' Validate the form
+   ''' Save a record to the NameProductServicePurchased Table in UJMAIN database (storing all online forms submissin both classic asp and asp.net)
+   ''' If the form relates to events of WCCE, Save a record to SQL course registration storage which is used to update student manager each night
+   ''' Prepare the email content to send to: The form user, CTD at least in the beginning and to the department who oversee the form
+   ''' Send the email
+   ''' If the form requires online payment, send the user to Payflow link site.
+   ''' Clear the form
+   ''' Show a thank you message
+   ''' </summary>
+   ''' <param name="sender"></param>
+   ''' <param name="e"></param>
+   ''' <remarks></remarks>
+   Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSave.Click
+      Dim sResults As String = "" 'Holds the results from the validation method
+      Dim lPS As Integer = 0 'holds the newly created record id in NameProductServicePurchased table
+      Dim iNewRegistrationID As Integer = 0 'holds the newly created record id for course registration 
+      Dim sFailedOn As String = ""  'holds a friendly error message if any of the saving to the database failes
+      'oPSD as an instance of the object that saves to NameProductServicePurchased table
+      Dim oPSD As NameBO.ProductService.ProductServiceData = New NameBO.ProductService.ProductServiceData
+      'oDS as an instance of the object that stores the information to be sent to the object that saves to NameProductServicePurchased table
+      Dim oDS As NameBO.ProductService.DataServices = New NameBO.ProductService.DataServices
+      Dim lNameId As Long 'Saving to NameProductServicePurchased table requires a record in the main NAME table. This var will hold the NameId field (either found or created during the saving process)
+
+      'validate the form
+      sResults = ValidateControls()
+      If 1 = 1 Then 'for debugging if we want to bypass saving to the database again and again
+         'We can shut down saving to the dabase for all forms by using web.config appSettings 
+         Dim SaveToProductService As String = System.Configuration.ConfigurationManager.AppSettings("SaveToProdcutService").ToString().ToLower
+         If SaveToProductService.ToLower = "yes" Then
+            'Saving to the NameProductServicePurchased table
+            'Get the details
+            Dim sDetails As String = SetDetails()
+            With oPSD
+               .NameID = lNameId 'Integer.Parse(hNameId.Value)
+               .NameProductServicePurchasedID = lPS 'output parameter
+               .LastName = txtLastName.Text
+               .FirstName = txtFirstName.Text
+               .Address = txtAddress.Text
+               .City = txtCity.Text
+               .CreatedById = System.DBNull.Value 'currently not in use but keep this 
+               .DatePurchased = Now() '
+               .Detailes = sDetails
+               .Email = txtEmail.Text
+               .ErrorMessage = "" 'Not sure it is needed
+               .HomePhoneNumber = txtPhone.Text
+               .ProductServicePurchased = 1073 'Each form needs its own id. Get from database administrator
+               .ReviewStatusID = 1000 'Means submitted. It changes to Paid if forms involve online payments done on outside side
+               .State = txtState.Text
+               .TotalAmount = 35 '0 for none "payment" forms
+               .UpdatedById = System.DBNull.Value 'keep
+               .WorkPhoneNumber = "" '
+               .Zip = txtZip.Text
+            End With
+            Try
+               oPSD = oDS.save(oPSD)
+               lPS = oPSD.NameProductServicePurchasedID 'if saving successful it will hold the newly created id
+            Catch ex As Exception
+               sFailedOn = "Saving Product Service information to the database has failed" & vbCrLf & Err.Description & vbCrLf & Err.Number & vbCrLf & Err.Source
+            End Try
+         End If
+      End If
+      If sFailedOn = "" Then
+         'now prepare the HTML confirmation email
+         Dim o As New NameBO.NameBO.WebUtil.WebUtililites
+         'Dim ou As New NameBO.AJUUtilities.Misc 'use if need silent logging or debugging
+         Dim au As AJUUtilities = New AJUUtilities
+         Dim om As New AJUUtilities.email
+         Dim oBr As New NameBO.AJUUtilities.BrokenRules 'simple object to add issues / problems found
+         Dim url As String = au.GetURLWithPathOnly(Request.Url.ToString) + "Ourform.html"
+         'This is sample on how to save to a log file
+         'ou.Log(AppDomain.CurrentDomain.BaseDirectory & "log.txt", "request.rawurl:" & Request.RawUrl & " requestAbsoluteUri:" & Request.Url.AbsoluteUri & " Request.Url.AbsolutePath:" & Request.Url.AbsolutePath & " URL:" & url)
+         Dim PageHTML As String
+         'GetWebform uses an HTML and replaces control with value in the current form
+         PageHTML = o.GetWebForm(url, Page)
+         'ou.Log(AppDomain.CurrentDomain.BaseDirectory & "log.txt", PageHTML)
+         'include the newly create id after saving as reference #. THis will help in customer support and troubleshooting
+         Dim Ref As String = "No reference # set"
+         If lPS <> 0 Then
+            Ref = lPS.ToString
+         End If
+         oBr = om.SendMail(PageHTML, "Womens Lunch and Learn Reference #" + Ref, "cas@ajula.edu", "American Jewish University", "mbrother@ajula.edu;" & txtEmail.Text)
+         If oBr.IsValid = False Then
+            lblMessage.Text = oBr.ToString
+         End If
+         'Dim sHTML As String
+         'Dim Onlinepay As String = "yes"
+         'Try
+         '   Onlinepay = System.Configuration.ConfigurationManager.AppSettings("WCCEEventPayOnline").ToString()
+         'Catch ex As Exception
+         'Finally
+         '   If Onlinepay.ToLower = "yes" Then
+         '      sHTML = o.CreatePayFlowLinkHTML(txtGT.Text, txtLastName.Text & " " & txtFirstName.Text, txtAddress.Text, txtCity.Text, txtState.Text, txtZipCode.Text, txtPhone1.Text, _
+         '                                      "Dancing with the Rabbis - " & sReferenceNumber, sReferenceNumber, "WCCEDWR2011", "http://www.ajula.edu/misc/fr11DWR.aspx", txtEmail.Text)
+         '      Response.Write(sHTML)
+         '      Response.End()
+         '   End If
+         'End Try
+         'all good
+         ClearControls()
+         lblThankYour.Visible = True
+         lblThankYour.Text = "We need a generic thank you"
+      Else
+         'saving to the database failed. 
+         lblMessage.Text = sFailedOn
+      End If 'if 1=2 by pass for now
+
+
+   End Sub

@@ -1,0 +1,8 @@
+<div>
+    <recaptcha:RecaptchaControl
+    ID="recaptcha"
+    runat="server"
+    PublicKey="6LfZ_M4SAAAAAM9RmRckEFJNiVt6b5bJEto_XqgN"
+    PrivateKey="6LfZ_M4SAAAAAPFdOxrCNkH80n8rIXbhGplgcXXX"
+    />
+    </div>

@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Calculate Totals</title>
+<script src="/Scripts/jquery-1.7.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("input:radio").click(function() {calc()});
+		$("input:checkbox").click(function() {calc()});		
+	  	});
+function calc()
+{
+				var sList = "";
+				var total = 0;
+			$('input[type=checkbox]').each(function () {
+				if($(this).is(':checked')) {
+				 //sList += "(" + $(this).val() + "-" + (this.checked ? "checked" : "not checked") + ")";
+				 var lbl =  $('label[for="' + this.id + '"]').html();
+				 sList += lbl;
+				 var strArray = lbl.match(/(\d+)/g);
+				 if (strArray != null && strArray.length > 0 )
+				 {
+				 if(isNaN(strArray[strArray.length-1]) == false) //assuming last number is the amount!
+				 {
+					 total += parseInt(strArray[strArray.length-1]) ;
+					 }
+				 }
+				}
+			});
+			$('input:radio').each(function() {
+  				if($(this).is(':checked')) {
+				var lbl = $(this).parent().html();
+				 var strArray = lbl.match(/(\d+)/g);
+				 if (strArray != null && strArray.length > 0 )
+				 {
+				 if(isNaN(strArray[strArray.length-1]) == false) //assuming last number is the amount!
+				 {
+					 total += parseInt(strArray[strArray.length-1]) ;
+					 }
+				 }
+			  } 
+			});
+			$("#results").text(sList);
+			$("#total").html(total) ;
+	}
+</script>		
+</head>
+
+<body>
+<p><input id="ctl00_ContentPlaceHolder1_rblPlayerSpot1" type="radio" name="ctl00$ContentPlaceHolder1$rblPlayerSpot" value="rblPlayerSpot1" />	<strong>Executive Foursome</strong> includes breakfast, lunch, cocktails, hors d’oeuvres, dinner and VIP Gift Package - 5700</p>	
+                  <p><input id="ctl00_ContentPlaceHolder1_rblPlayerSpot2" type="radio" name="ctl00$ContentPlaceHolder1$rblPlayerSpot" value="rblPlayerSpot2" />	<strong>Executive Twosome</strong> includes breakfast, lunch, cocktails, hors d’oeuvres, dinner and VIP Gift Package - 2850</p>	
+                  <p><input id="ctl00_ContentPlaceHolder1_rblPlayerSpot3" type="radio" name="ctl00$ContentPlaceHolder1$rblPlayerSpot" value="rblPlayerSpot3" />	<strong>VIP Individual Playing Spot</strong> includes breakfast, lunch, cocktails, hors d’oeuvres, dinner and VIP Gift Package - 1425</p>	
+                  <p><input id="ctl00_ContentPlaceHolder1_rblPlayerSpot4" type="radio" name="ctl00$ContentPlaceHolder1$rblPlayerSpot" value="rblPlayerSpot4" />	<strong>Individual Spot</strong> includes breakfast, lunch, cocktails, hors d’oeuvres, dinner and gift - 1750</p>	
+                  <p><input id="ctl00_ContentPlaceHolder1_rblPlayerSpot5" type="radio" name="ctl00$ContentPlaceHolder1$rblPlayerSpot" value="rblPlayerSpot5" />	<strong>Golf School</strong> (see page 7) includes lunch, group private lesson, cocktails, hors d’oeuvres, dinner and gift - 1450</p>	
+                  		
+                  <h4 style="text-align: left; float: none; display: inline; padding-left: 1%;"><input id="ctl00_ContentPlaceHolder1_rblPlayerSpot6" type="radio" name="ctl00$ContentPlaceHolder1$rblPlayerSpot" value="rblPlayerSpot6" /> Presenting Sponsor - 15000</h4>		
+                  <ul style="text-align: left; margin-left: 10%;">		<li>Twelve (12) Tournament Playing Spots including tee gift package</li>
+		                  <li>Eight (8) additional reservations for cocktails, hors d’oeuvres, and dinner reception</li>
+		                  <li>Corporate name/logo incorporated into name of the event</li>
+		                  <li>Recognition in University publications where donor lists are published reaching 20,000 recipients,</li>
+		                  <li>two corporate banners, and six (6) on-course tee signs</li>
+		                  <li>Corporate name/logo included into event name and included on tournament materials and banner</li>
+		                  <li>Two (2) pin flags</li>
+		                  <li>Only one title sponsor available.</li>
+                  </ul>		
+                  <h4 style="text-align: left; float: none; display: inline; padding-left: 1%;"><input id="ctl00_ContentPlaceHolder1_rblPlayerSpot7" type="radio" name="ctl00$ContentPlaceHolder1$rblPlayerSpot" value="rblPlayerSpot7" />	Presenting Sponsor - 15000 </h4>	
+                  <ul style="text-align: left; margin-left: 10%;">		
+		                  <li>Eight (8) Tournament Playing Spots including tee gift package</li>
+		                  <li>Four (4) additional reservations for cocktails, hors d’oeuvres, and dinner reception</li>
+		                  <li>Corporate name/logo incorporated into name of the event as a Presenting Sponsor</li>
+		                  <li>Recognition in University publications where donor lists are published reaching 20,000 recipients,</li>
+		                  <li>one (1) corporate banner, and three (3) on-course tee signs</li>
+		                  <li>Two (2) pin flags</li>
+                  </ul>
+                  
+
+	<table id="ctl00_ContentPlaceHolder1_cblNonPlaying" border="0">
+			<tr>
+				<td><input id="ctl00_ContentPlaceHolder1_cblNonPlaying_0" type="checkbox" name="ctl00$ContentPlaceHolder1$cblNonPlaying$0" /><label for="ctl00_ContentPlaceHolder1_cblNonPlaying_0">None</label></td>
+			</tr>
+         <tr>
+				<td><input id="ctl00_ContentPlaceHolder1_cblNonPlaying_1" type="checkbox" name="ctl00$ContentPlaceHolder1$cblNonPlaying$1" /><label for="ctl00_ContentPlaceHolder1_cblNonPlaying_1">Dinner Sponsor (includes 4 tickets to the hosted cocktails and buffet dinner and a company banner at dinner) - $5000</label></td>
+			</tr>
+         <tr>
+				<td><input id="ctl00_ContentPlaceHolder1_cblNonPlaying_2" type="checkbox" name="ctl00$ContentPlaceHolder1$cblNonPlaying$2" /><label for="ctl00_ContentPlaceHolder1_cblNonPlaying_2">Another option - $234</label></td>
+			</tr>
+	</table>
+	<div id="results"></div>
+   Total<div id="total"></div>
+</body>
+</html>

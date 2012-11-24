@@ -1,0 +1,42 @@
+<script src="/Scripts/jquery-1.7.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("input:radio").click(function() {calc()});
+		$("input:checkbox").click(function() {calc()});		
+	  	});
+function calc()
+{
+				var sList = "";
+				var total = 0;
+			$('input[type=checkbox]').each(function () {
+				if($(this).is(':checked')) {
+				 //sList += "(" + $(this).val() + "-" + (this.checked ? "checked" : "not checked") + ")";
+				 var lbl =  $('label[for="' + this.id + '"]').html();
+				 sList += lbl;
+				 var strArray = lbl.match(/(\d+)/g);
+				 if (strArray != null && strArray.length > 0 )
+				 {
+				 if(isNaN(strArray[strArray.length-1]) == false) //assuming last number is the amount!
+				 {
+					 total += parseInt(strArray[strArray.length-1]) ;
+					 }
+				 }
+				}
+			});
+			$('input:radio').each(function() {
+  				if($(this).is(':checked')) {
+				var lbl = $(this).parent().html();
+				 var strArray = lbl.match(/(\d+)/g);
+				 if (strArray != null && strArray.length > 0 )
+				 {
+				 if(isNaN(strArray[strArray.length-1]) == false) //assuming last number is the amount!
+				 {
+					 total += parseInt(strArray[strArray.length-1]) ;
+					 }
+				 }
+			  } 
+			});
+			$("#results").text(sList);
+			$("#total").html(total) ;
+	}
+</script>

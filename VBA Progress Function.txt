@@ -1,0 +1,8 @@
+=CONCATENATE(ROUND((COUNTIF(E:E, "Done")/(COUNTA(B:B)-1))*100, 2), "% done")
+
+Put the string together (## + %)
+     Round ## to 2 decimal places
+          count if column contains string
+               divided by 
+                    count if !empty minus header(s)
+                         multiplied by 100 to make a percent

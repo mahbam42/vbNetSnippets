@@ -1,0 +1,10 @@
+Dim i As Integer = 0
+      Dim chkBox As UI.WebControls.CheckBox 'Easier naming 
+      For i = 1 To 23 'for i = 1 to the total number of controls
+         'what to look for in the master - CPH + ID + Index Number (equals i)
+         chkBox = Master.FindControl("ContentPlaceHolder1").FindControl("cblNonPlaying" + i.ToString)
+         'If it's checked uncheck it.
+         If chkBox.Checked = True Then
+            chkBox.Checked = False
+         End If
+      Next

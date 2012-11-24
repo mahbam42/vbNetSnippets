@@ -1,0 +1,16 @@
+      // Max wrote this...
+      $(document).ready(function() {
+         $("#<%= txtAdults.clientID %>").blur(function() {calc()});		
+         });
+      function calc()
+      {
+	      var total = 0
+	      var price = 10
+	      //$("#<%= txtAdults.clientID %>").each
+
+	      if ($("#<%= txtAdults.clientID %>").val() != '' && isNaN($("#<%= txtAdults.clientID %>").val()) == false)
+			            {
+			               total += parseInt($("#<%= txtAdults.clientID %>").val() * price);
+			            }
+		   $("#<%= txtT1.clientID %>").val(total) ;
+      }
